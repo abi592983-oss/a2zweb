@@ -1,1 +1,7 @@
-{"name":"a2zweb","private":true,"scripts":{"build":"node --check web/app.js && node -e \"JSON.parse(require('fs').readFileSync('web/content.json'));require('fs').mkdirSync('dist',{recursive:true});require('fs').cpSync('web','dist',{recursive:true})\""}}
+{
+  "name": "a2zweb",
+  "private": true,
+  "scripts": {
+    "build": "node --check app.js && node -e \"const fs=require('fs');JSON.parse(fs.readFileSync('content.json'));fs.mkdirSync('dist',{recursive:true});for(const p of ['index.html','style.css','app.js','content.json'])fs.copyFileSync(p,'dist/'+p);if(fs.existsSync('images'))fs.cpSync('images','dist/images',{recursive:true})\""
+  }
+}

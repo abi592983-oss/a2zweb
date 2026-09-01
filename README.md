@@ -4,15 +4,19 @@ First visual concept for A2Z Tec Solutions (Pvt) Ltd, Paranthan.
 
 ## Edit content
 
-Edit `web/content.json` to change the hero, services, contact details, gallery photos and deposit. Set service `active` to false to hide it. Gallery entries use `image`, `alt`, `title` and `caption`. Image paths can point to files under `web/images/`. WhatsApp must include the country code, e.g. 94 followed by the national number without its leading zero.
+Edit `content.json` to change the hero, services, contact details, gallery photos and deposit. Set service `active` to false to hide it. Gallery entries use `image`, `alt`, `title` and `caption`. Image paths can point to files under `images/`. WhatsApp must include the country code, e.g. 94 followed by the national number without its leading zero.
 
 ## Preview locally
 
-Run `python3 -m http.server 8000 --directory web` and open http://localhost:8000. No dependencies, database or build tooling required. Hash navigation works on static hosts and repository subpaths.
+Run `python3 -m http.server 8000` and open http://localhost:8000. No dependencies, database or build tooling required. Hash navigation works on static hosts and repository subpaths.
 
-## Hosting
+## Hosting on GitHub Pages
 
-Deploy the `web` directory to Netlify or another static host. A private ChatGPT Sites preview is configured through `.openai/hosting.json`. GitHub Pages is not enabled by these files; repository hosting settings must be configured separately.
+The website files are in the repository root. In Settings → Pages, select “Deploy from a branch”, branch “main”, folder “/ (root)”, and Save. No npm installation or build is required. The .nojekyll file disables Jekyll processing.
+
+GitHub Pages must be enabled in repository settings. This source change does not enable Pages by itself. Private repositories require a GitHub plan supporting Pages for private repositories; otherwise the repository must be made public by its owner.
+
+Edit content.json for content and image paths. Relative URLs support the /a2zweb/ project path. For Netlify, publish the repository root. The optional npm run build command copies the website into dist for the existing ChatGPT Sites preview configuration; it does not deploy either host.
 
 ## Current limits
 
