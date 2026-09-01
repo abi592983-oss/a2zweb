@@ -30,9 +30,72 @@ function applyBrand() {
   if (typeof color === 'string' && /^#[0-9a-f]{6}$/i.test(color)) document.querySelector('meta[name="theme-color"]').content = color;
 }
 
+
+let translations = {};
+let language = 'en';
+let translationLookup = new Map();
+const originalText = new WeakMap();
+const originalAttributes = new WeakMap();
+function translate(source) {
+  const value = String(source ?? '');
+  if (language === 'en') return value;
+  const trimmed = value.trim();
+  const result = translationLookup.get(trimmed);
+  return result === undefined ? value : value.replace(trimmed, () => result);
+}
+function localize(root) {
+  const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+  let node;
+  while ((node = walker.nextNode())) {
+    if (node.parentElement?.closest('script, style, textarea, pre, [data-language]')) continue;
+    if (!originalText.has(node)) originalText.set(node, node.nodeValue);
+    node.nodeValue = translate(originalText.get(node));
+  }
+  root.querySelectorAll('[aria-label], [alt], [title], [placeholder]').forEach(el => {
+    if (el.closest('[data-language]')) return;
+    if (!originalAttributes.has(el)) originalAttributes.set(el, {});
+    const saved = originalAttributes.get(el);
+    for (const attr of ['aria-label','alt','title','placeholder']) {
+      if (!el.hasAttribute(attr)) continue;
+      if (!(attr in saved)) saved[attr] = el.getAttribute(attr);
+      el.setAttribute(attr, translate(saved[attr]));
+    }
+  });
+}
+function updatePageLanguage() {
+  document.documentElement.lang = language === 'ta' ? 'ta-LK' : 'en';
+  document.querySelectorAll('[data-language]').forEach(button => {
+    button.setAttribute('aria-pressed', String(button.dataset.language === language));
+  });
+  const route = location.hash.slice(1).split('/')[0] || 'home';
+  const titles = {home:'Home',services:'Services',service:'Service',health:'Health check',work:'Our work',about:'About',contact:'Contact',booking:'Booking',policies:'Policies'};
+  document.title = translate(titles[route] || 'PAGE NOT FOUND') + ' · A2Z Tec Solutions';
+  document.querySelector('meta[name="description"]').content = translate(data.hero.description);
+}
+function setLanguage(next, updateURL = true) {
+  language = next === 'ta' && translations.ta ? 'ta' : 'en';
+  translationLookup = new Map(Object.entries(translations[language] || {}).map(([key,value]) => [
+    key.replaceAll('{deposit}', String(data.deposit)),
+    value.replaceAll('{deposit}', String(data.deposit))
+  ]));
+  // Translate text in place so form fields, selections and prepared requests survive.
+  localize(document.body);
+  updatePageLanguage();
+  if (updateURL) {
+    const url = new URL(location.href);
+    url.searchParams.set('lang', language);
+    history.replaceState(null, '', url);
+  }
+}
+function render() {
+  renderContent();
+  localize(document.body);
+  updatePageLanguage();
+}
+
 const options=['Computer / laptop repair','CCTV repair','Printer repair','Networking','CCTV installation','Computer / laptop health check','CCTV health check'];
-function booking(){return intro('LET’S GET IT SORTED','Tell us what you need.','Prepare your service request. A visit is confirmed only after we contact you.')+`<div class="columns"><form id="booking-form" class="panel"><div class="field"><label for="service">Service</label><select id="service" name="service">${options.map(t=>`<option>${esc(t)}</option>`).join('')}</select></div><div class="columns"><div class="field"><label for="name">Your name</label><input id="name" name="name" required autocomplete="name" maxlength="100"></div><div class="field"><label for="phone">Phone number</label><input id="phone" name="phone" required type="tel" autocomplete="tel" maxlength="30"></div></div><div class="field"><label for="email">Email</label><input id="email" name="email" type="email" required autocomplete="email"></div><div class="field"><label for="address">Service address</label><textarea id="address" name="address" required autocomplete="street-address" maxlength="500"></textarea></div><div class="field"><label for="device">Device name / type</label><input id="device" name="device" maxlength="100"></div><div class="columns"><div class="field"><label for="model">Model (optional)</label><input id="model" name="model" maxlength="100"></div><div class="field"><label for="serial">Serial number (optional)</label><input id="serial" name="serial" maxlength="100"></div></div><div class="field" id="camera-field" hidden><label for="cameras">Number of cameras required</label><input id="cameras" name="cameras" type="number" min="1" max="500"></div><div class="field"><label for="problem">Problem or installation requirements</label><textarea id="problem" name="details" required maxlength="2000"></textarea></div><button class="button" type="submit">Prepare request ↗</button><p class="note">Your details stay in this page until you choose to send or copy your request.</p></form><aside><div class="panel"><span class="badge">BY APPOINTMENT</span><h3>One request.<br>A clear next step.</h3><p>1. Tell us about the device or installation.</p><p>2. We confirm the work, location and appointment.</p><p>3. Pay the booking deposit once arrangements are confirmed.</p><hr><p><strong>LKR ${esc(data.deposit)} booking deposit</strong><br>Do not send payment before your appointment is confirmed.</p><p class="note">Health checks cover working systems. Fault diagnosis is a separate service.</p></div><div id="request-result" aria-live="polite"></div></aside></div>`}
-function render(){const route=location.hash.slice(1)||'home';let html='';
+function booking(){return intro('LET’S GET IT SORTED','Tell us what you need.','Prepare your service request. A visit is confirmed only after we contact you.')+`<div class="columns"><form id="booking-form" class="panel"><div class="field"><label for="service">Service</label><select id="service" name="service">${options.map(t=>`<option value="${esc(t)}">${esc(t)}</option>`).join('')}</select></div><div class="columns"><div class="field"><label for="name">Your name</label><input id="name" name="name" required autocomplete="name" maxlength="100"></div><div class="field"><label for="phone">Phone number</label><input id="phone" name="phone" required type="tel" autocomplete="tel" maxlength="30"></div></div><div class="field"><label for="email">Email</label><input id="email" name="email" type="email" required autocomplete="email"></div><div class="field"><label for="address">Service address</label><textarea id="address" name="address" required autocomplete="street-address" maxlength="500"></textarea></div><div class="field"><label for="device">Device name / type</label><input id="device" name="device" maxlength="100"></div><div class="columns"><div class="field"><label for="model">Model (optional)</label><input id="model" name="model" maxlength="100"></div><div class="field"><label for="serial">Serial number (optional)</label><input id="serial" name="serial" maxlength="100"></div></div><div class="field" id="camera-field" hidden><label for="cameras">Number of cameras required</label><input id="cameras" name="cameras" type="number" min="1" max="500"></div><div class="field"><label for="problem">Problem or installation requirements</label><textarea id="problem" name="details" required maxlength="2000"></textarea></div><button class="button" type="submit">Prepare request ↗</button><p class="note">Your details stay in this page until you choose to send or copy your request.</p></form><aside><div class="panel"><span class="badge">BY APPOINTMENT</span><h3>One request.<br>A clear next step.</h3><p>1. Tell us about the device or installation.</p><p>2. We confirm the work, location and appointment.</p><p>3. Pay the booking deposit once arrangements are confirmed.</p><hr><p><strong>LKR ${esc(data.deposit)} booking deposit</strong><br>Do not send payment before your appointment is confirmed.</p><p class="note">Health checks cover working systems. Fault diagnosis is a separate service.</p></div><div id="request-result" aria-live="polite"></div></aside></div>`}
+function renderContent(){const route=location.hash.slice(1)||'home';let html='';
 if(route==='home'){html=`<section class="wrap hero"><div><span class="eyebrow">YOUR NEIGHBOURHOOD TECH PARTNER</span><h1>${esc(data.hero.title)}</h1><p>${esc(data.hero.description)}</p><div class="actions">${link('#booking','Book a service ↗')}${link('#services','Find your service','outline')}</div></div><div class="hero-photo"><img src="${safeURL(data.hero.image)}" alt="Close-up of computer motherboard components" fetchpriority="high"><div class="photo-note"><div><small>FROM THE WORKBENCH TO YOUR WORKDAY</small><strong>We keep you connected.</strong></div><span aria-hidden="true">↗</span></div></div></section><div class="trust"><span>✓ NVQ-qualified technician</span><span>✓ Local workshop</span><span>✓ On-site service by arrangement</span></div><section class="wrap"><div class="sectionhead"><div><span class="eyebrow">WHAT CAN WE HELP WITH?</span><h2>Your tech. Our everyday.</h2></div><a class="textlink" href="#services">Explore services ↗</a></div>${cards()}</section><section class="wrap" style="padding-top:0">${health()}</section>`;}
 else if(route==='services'){html=`<section class="wrap">${intro('REPAIR · INSTALLATION · SUPPORT','The right help for your tech.','Choose a service to see how we can help.')}${cards()}<div class="cta"><h2>Need us at your place?</h2><p>Ask about doorstep and on-site support when booking. Availability and travel charges are confirmed before the visit.</p>${link('#booking','Arrange a visit ↗')}</div></section>`}
 else if(route.startsWith('service/')){const s=data.services.find(s=>s.id===route.split('/')[1]&&s.active);html=s?`<section class="wrap">${intro(s.tag,s.name,s.description)}<div class="columns"><div class="panel"><h3>Start with the problem.</h3><p>Tell us what is happening, the device type and your location. We’ll contact you to arrange the next step.</p><p>Scope, pricing and warranty terms are confirmed for your specific job.</p>${link('#booking','Request this service ↗')}</div><div class="panel"><h3>Workshop or on-site?</h3><p>Visit our Paranthan workshop by arrangement, or ask whether your job can be handled on-site.</p>${link('#contact','Find A2Z','outline')}</div></div></section>`:notfound();}
@@ -43,6 +106,33 @@ else if(route==='about'){html=`<section class="wrap">${intro('A2Z TEC SOLUTIONS 
 else if(route==='contact'){html=`<section class="wrap">${intro('LET’S TALK','Your local tech stop.','Find us in Paranthan, on the A-35 main road.')}<div class="columns"><div class="panel"><h3>Visit the workshop</h3><p>${esc(data.address)}</p><p>Parking available.</p><p>${esc(data.hours)}</p><a class="button outline" target="_blank" rel="noopener" href="${safeURL(data.mapsUrl || ('https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(data.plusCode || data.address)))}">Find our shop on Google Maps ↗</a>${data.plusCode ? `<p class="note">Plus Code: ${esc(data.plusCode)}</p>` : ''}</div><div class="panel"><h3>Get in touch</h3><div class="actions">${contacts()}</div>${!data.phone&&!data.whatsapp&&!data.email?'<p>Contact details will be available here soon.</p>':''}<p>For a repair, installation or health check, prepare your details on the booking page.</p>${link('#booking','Prepare a service request ↗')}</div></div></section>`}
 else if(route==='policies'){html=`<section class="wrap">${intro('BEFORE YOU BOOK','Service information','A few practical things to know.')}<div class="panel"><h3>Appointments & deposits</h3><p>The standard booking deposit is LKR ${esc(data.deposit)}. Appointments and payment instructions must be confirmed with A2Z before you pay. Cancellation and refund terms will be confirmed before taking payment.</p><h3>Diagnosis & health checks</h3><p>Health checks are for working systems. A faulty or non-working device requires a repair diagnosis. Travel charges, repair scope and pricing are confirmed for each job.</p><h3>Warranty</h3><p>Warranty coverage depends on the work performed and parts supplied. Confirm the applicable terms before authorising the job.</p><h3>Your details</h3><p>This concept does not send booking data to a server or store it in browser storage. A prepared request remains on this page. If you choose WhatsApp, that service handles the message under its own privacy terms.</p></div></section>`}
 else html=notfound();main.innerHTML=html;document.querySelectorAll('nav a').forEach(a=>{if(a.hash==='#'+route)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current')});document.title=(route==='home'?'A2Z Tec Solutions':route.split('/')[0].replace(/^./,c=>c.toUpperCase())+' · A2Z Tec Solutions');
-if(route==='booking'){const form=document.querySelector('form');const service=form.elements.service;const update=()=>{const yes=service.value==='CCTV installation';document.querySelector('#camera-field').hidden=!yes;form.elements.cameras.required=yes;form.elements.device.required=!yes};service.addEventListener('change',update);update();form.addEventListener('submit',e=>{e.preventDefault();const pairs=[...new FormData(form)].filter(([k,v])=>v&&(k!=='cameras'||service.value==='CCTV installation'));const summary='A2Z service request\n\n'+pairs.map(([k,v])=>k+': '+v).join('\n');const target=document.querySelector('#request-result');target.innerHTML=`<h3>Request prepared — not sent</h3><pre class="result">${esc(summary)}</pre><div class="actions"><button class="button outline" id="copy" type="button">Copy request</button>${data.whatsapp?link('https://wa.me/'+data.whatsapp.replace(/\D/g,'')+'?text='+encodeURIComponent(summary),'Send via WhatsApp','accent'):''}</div><p class="note">${data.whatsapp?'Your appointment still needs confirmation.':'Sending will be available once A2Z contact details are added.'}</p>`;document.querySelector('#copy').onclick=async()=>{try{await navigator.clipboard.writeText(summary);document.querySelector('#copy').textContent='Copied'}catch{document.querySelector('#copy').textContent='Select and copy the text above'}};target.scrollIntoView({behavior:'auto',block:'center'});});}}
+if(route==='booking'){const form=document.querySelector('form');const service=form.elements.service;const update=()=>{const yes=service.value==='CCTV installation';document.querySelector('#camera-field').hidden=!yes;form.elements.cameras.required=yes;form.elements.device.required=!yes};service.addEventListener('change',update);update();form.addEventListener('submit',e=>{e.preventDefault();const pairs=[...new FormData(form)].filter(([k,v])=>v&&(k!=='cameras'||service.value==='CCTV installation'));const labels={service:'Service',name:'Your name',phone:'Phone number',email:'Email',address:'Service address',device:'Device name / type',model:'Model (optional)',serial:'Serial number (optional)',cameras:'Number of cameras required',details:'Problem or installation requirements'};const summary=translate('A2Z service request')+'\n\n'+pairs.map(([k,v])=>translate(labels[k]||k)+': '+(k==='service'?translate(v):v)).join('\n');const target=document.querySelector('#request-result');target.innerHTML=`<h3>Request prepared — not sent</h3><pre class="result">${esc(summary)}</pre><div class="actions"><button class="button outline" id="copy" type="button">Copy request</button>${data.whatsapp?link('https://wa.me/'+data.whatsapp.replace(/\D/g,'')+'?text='+encodeURIComponent(summary),'Send via WhatsApp','accent'):''}</div><p class="note">${data.whatsapp?'Your appointment still needs confirmation.':'Sending will be available once A2Z contact details are added.'}</p>`;document.querySelector('#copy').onclick=async()=>{try{await navigator.clipboard.writeText(summary);document.querySelector('#copy').textContent=translate('Copied')}catch{document.querySelector('#copy').textContent=translate('Select and copy the text above')}};localize(target);target.scrollIntoView({behavior:'auto',block:'center'});});}}
 function notfound(){return `<section class="wrap">${intro('PAGE NOT FOUND','Let’s get you back.','Choose a service or return to the home page.')}${link('#home','Back to home')}</section>`}
-fetch('./content.json').then(r=>{if(!r.ok)throw Error('Content unavailable');return r.json()}).then(d=>{data=d;applyBrand();render();window.addEventListener('hashchange',()=>{render();window.scrollTo(0,0);main.focus({preventScroll:true})})}).catch(()=>{main.innerHTML='<div class="wrap"><h1>Unable to load the site.</h1><p>Please refresh to try again.</p></div>'});
+
+Promise.all([
+  fetch('./content.json').then(r => { if (!r.ok) throw Error('Content unavailable'); return r.json(); }),
+  fetch('./translations.json').then(r => { if (!r.ok) throw Error('Translations unavailable'); return r.json(); }).catch(() => ({}))
+]).then(([content, locales]) => {
+  data = content;
+  translations = locales;
+  applyBrand();
+  const requested = new URL(location.href).searchParams.get('lang');
+  setLanguage(requested === 'en' || requested === 'ta' ? requested : data.defaultLanguage, false);
+  render();
+  document.querySelectorAll('[data-language]').forEach(button => {
+    if (button.dataset.language === 'ta' && !translations.ta) {
+      button.disabled = true;
+      document.querySelector('#language-status').textContent = 'தமிழை ஏற்ற முடியவில்லை. மீண்டும் முயற்சிக்கப் பக்கத்தைப் புதுப்பியுங்கள்.';
+    }
+    button.addEventListener('click', () => setLanguage(button.dataset.language));
+  });
+  window.addEventListener('hashchange', () => {
+    render(); window.scrollTo(0,0); main.focus({preventScroll:true});
+  });
+  window.addEventListener('popstate', () => {
+    const selected = new URL(location.href).searchParams.get('lang');
+    setLanguage(selected === 'en' || selected === 'ta' ? selected : data.defaultLanguage, false);
+  });
+}).catch(() => {
+  main.innerHTML='<div class="wrap"><h1>இணையத்தளத்தை ஏற்ற முடியவில்லை.</h1><p>மீண்டும் முயற்சிக்கப் பக்கத்தைப் புதுப்பியுங்கள்.</p><p lang="en">Unable to load the site. Please refresh to try again.</p></div>';
+});

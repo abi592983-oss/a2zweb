@@ -174,3 +174,44 @@ footer .brand-logo{width:160px}
 
 }
 
+
+/* Tamil uses natural spacing and extra line height for vowel marks. */
+.language-switch{display:flex;gap:2px;padding:3px;border:1px solid var(--line);border-radius:5px;flex-shrink:0}
+.language-switch button{border:0;border-radius:3px;background:transparent;color:var(--ink);font-size:14px;min-height:44px;padding:8px 12px;cursor:pointer}
+.language-switch button[aria-pressed="true"]{background:var(--ink);color:white}
+.language-switch button:disabled{opacity:.5;cursor:not-allowed}
+#language-status:empty{display:none}
+#language-status{margin:12px 5%;font-size:14px}
+html:lang(ta) body{font-family:"Nirmala UI","Tamil Sangam MN",Latha,Arial,sans-serif;line-height:1.85}
+html:lang(ta) h1,html:lang(ta) h2,html:lang(ta) h3{letter-spacing:normal;line-height:1.5;white-space:pre-line;overflow-wrap:anywhere}
+html:lang(ta) h1{font-size:clamp(32px,3.8vw,52px)}
+html:lang(ta) h2{font-size:clamp(25px,2.5vw,34px)}
+html:lang(ta) h3{font-size:20px}
+html:lang(ta) .eyebrow,html:lang(ta) .topline,html:lang(ta) .photo-note small{letter-spacing:normal}
+html:lang(ta) .eyebrow{font-size:14px}
+html:lang(ta) .button,html:lang(ta) .textlink{white-space:normal;line-height:1.7}
+html:lang(ta) .cards{grid-template-columns:repeat(2,minmax(0,1fr))}
+html:lang(ta) header{flex-wrap:wrap;gap:18px}
+html:lang(ta) nav{order:4;flex-basis:100%;gap:22px;flex-wrap:wrap}
+html:lang(ta) .language-switch{margin-left:auto}
+html:lang(ta) .feature{gap:30px}
+html:lang(ta) .photo-note strong{font-size:20px;line-height:1.6}
+html:lang(ta) .columns,html:lang(ta) .hero,html:lang(ta) .feature{min-width:0}
+html:lang(ta) .panel,html:lang(ta) .card,html:lang(ta) .hero>div{min-width:0}
+@media(max-width:1200px){
+  header{flex-wrap:wrap;gap:18px}
+  nav{order:4;flex-basis:100%}
+  .language-switch{margin-left:auto}
+}
+@media(max-width:650px){
+  header>.button{order:3;width:100%;margin:0}
+  nav{order:4}
+  html:lang(ta) .cards{grid-template-columns:1fr}
+  html:lang(ta) .checklist{grid-template-columns:1fr}
+  html:lang(ta) .hero h1,html:lang(ta) .pageintro h1{font-size:32px}
+  html:lang(ta) .sectionhead{display:block}
+  html:lang(ta) nav{gap:10px 20px;font-size:14px}
+  html:lang(ta) .mobilebar{gap:12px;font-size:14px;align-items:center}
+  html:lang(ta) .mobilebar a{min-width:0}
+  html:lang(ta) .photo-note strong{font-size:18px}
+}

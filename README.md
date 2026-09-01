@@ -14,6 +14,14 @@ The original supplied logo is stored at `images/a2z-logo.png`. Change `logo.src`
 
 The `theme` object controls seven colours: `ink`, `paper`, `surface`, `line`, `accent`, `accentText`, and `muted`. Use six-digit hex colours. Bright orange (#ff5a00) is a visual match to the supplied logo; darker orange is used for readable links on white. Primary orange buttons use near-black text. CSS includes matching defaults while JSON loads.
 
+## Languages
+
+Tamil is the default (`defaultLanguage: "ta"` in `content.json`). The தமிழ் / English control switches the current page without clearing booking fields. Shared URLs can select a language using `?lang=ta` or `?lang=en`, before the page hash. Only the URL stores the language choice; no browser storage is used.
+
+Edit Tamil copy in `translations.json`. Keys are the exact English source text from the interface or `content.json`; when English content changes or gallery entries are added, add the corresponding Tamil entries. Keep `{deposit}` in deposit messages so amounts follow `content.json`. Technical names and the supplied logo remain unchanged. Booking option values remain stable in English internally while visible labels and prepared requests follow the selected language. Already prepared request text is preserved when switching; prepare the request again to translate it into the other language.
+
+Tamil typography uses installed Tamil-capable system fonts with extra line height. If the translation file is unavailable, the site falls back to English and reports the missing Tamil option.
+
 ## Preview locally
 
 Run `python3 -m http.server 8000` and open http://localhost:8000. No dependencies, database or build tooling required. Hash navigation works on static hosts and repository subpaths.
@@ -28,6 +36,6 @@ Edit content.json for content and image paths. Relative URLs support the /a2zweb
 
 ## Current limits
 
-This is an English first concept. Phone, WhatsApp, email, hours and actual work photos need confirmation. Booking creates a local request summary and can hand it to WhatsApp when configured; it does not create an appointment, accept payment or persist submissions. Policies must be finalised before customer launch. No fabricated testimonials or customer work photos are included.
+This concept supports English and formal Sri Lankan Tamil. Phone, WhatsApp, email, hours and actual work photos need confirmation. Booking creates a local request summary and can hand it to WhatsApp when configured; it does not create an appointment, accept payment or persist submissions. Policies must be finalised before customer launch. No fabricated testimonials or customer work photos are included.
 
 Hero photograph: Oleg Gospodarec / Unsplash, https://unsplash.com/photos/a-close-up-of-a-motherboard-with-wires-and-connectors-Njw_--Fcu2U . Illustrative component photo, not A2Z customer work.
