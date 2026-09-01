@@ -1,0 +1,1 @@
+{"name":"a2zweb","private":true,"scripts":{"build":"node --check web/app.js && node -e \"JSON.parse(require('fs').readFileSync('web/content.json'));require('fs').mkdirSync('dist',{recursive:true});require('fs').cpSync('web','dist',{recursive:true})\""}}
