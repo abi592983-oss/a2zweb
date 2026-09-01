@@ -1,5 +1,7 @@
 {
   "brand": "A2Z Tec Solutions",
+  "logo": {"src": "./images/a2z-logo.png", "alt": "A2Z Tec Solutions (Pvt) Ltd"},
+  "theme": {"ink":"#141414","paper":"#ffffff","surface":"#f5f5f5","line":"#dedede","accent":"#ff5a00","accentText":"#b83d00","muted":"#595959"},
   "location": "Paranthan, Northern Sri Lanka",
   "address": "First floor, A-35 main road, Paranthan",
   "mapsUrl": "https://maps.app.goo.gl/ZsAvmGePitzKKamq7",

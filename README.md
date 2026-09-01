@@ -8,6 +8,12 @@ Edit `content.json` to change the hero, services, contact details, gallery photo
 
 The `plusCode` field sets the shop location used by the Google Maps button. Current confirmed location: CCP6+HJ, Parantan.
 
+## Brand identity
+
+The original supplied logo is stored at `images/a2z-logo.png`. Change `logo.src` and `logo.alt` in `content.json` to replace it. The image is preserved as supplied, including its light background.
+
+The `theme` object controls seven colours: `ink`, `paper`, `surface`, `line`, `accent`, `accentText`, and `muted`. Use six-digit hex colours. Bright orange (#ff5a00) is a visual match to the supplied logo; darker orange is used for readable links on white. Primary orange buttons use near-black text. CSS includes matching defaults while JSON loads.
+
 ## Preview locally
 
 Run `python3 -m http.server 8000` and open http://localhost:8000. No dependencies, database or build tooling required. Hash navigation works on static hosts and repository subpaths.
