@@ -10,7 +10,7 @@ The `plusCode` field sets the shop location used by the Google Maps button. Curr
 
 ## Brand identity
 
-The original supplied logo is stored at `images/a2z-logo.png`. Change `logo.src` and `logo.alt` in `content.json` to replace it. The image is preserved as supplied, including its light background.
+The supplied transparent logo is stored at `images/a2z-logo.png`. Change `logo.src` and `logo.alt` in `content.json` to replace it. The 581 × 404 PNG is preserved as supplied, including its transparent background.
 
 The `theme` object controls seven colours: `ink`, `paper`, `surface`, `line`, `accent`, `accentText`, and `muted`. Use six-digit hex colours. Bright orange (#ff5a00) is a visual match to the supplied logo; darker orange is used for readable links on white. Primary orange buttons use near-black text. CSS includes matching defaults while JSON loads.
 
