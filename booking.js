@@ -19,26 +19,29 @@ const A2ZBooking = (() => {
       ${select('service','Service',services)}
       <div class="columns">${input('name','Your name',true,'text','autocomplete="name" maxlength="100"')}${input('phone','Phone number',true,'tel','autocomplete="tel" pattern="(0[0-9]{9}|[+]94[0-9]{9}|94[0-9]{9})" placeholder="0771234567"')}</div>
       ${input('email','Email',true,'email','autocomplete="email" maxlength="254"')}
-      ${area('address','Service address',true)}${input('landmark','Nearby landmark',false,'text','maxlength="200"')}
-      ${select('contactLanguage','Preferred contact language',{ta:'தமிழ்',en:'English'})}
+      ${input('address','Service address',true,'text','autocomplete="street-address" maxlength="2000"')}
       <fieldset data-service-group="repair"><legend>Device details</legend>
-      ${input('device','Device name / type',true,'text','maxlength="200"')}
-      <div class="columns">${input('model','Model (optional)',false,'text','maxlength="100"')}${input('serial','Serial number (optional)',false,'text','maxlength="100"')}</div>
-      ${area('details','Problem or installation requirements',true)}${area('tried','What have you already tried?')}
+      ${input('device','Device / brand',true,'text','maxlength="200" list="booking-devices" placeholder="Choose or type your own"')}
+      ${area('details','What is the problem?',true)}
+      <details class="booking-extra"><summary>Model and serial number (optional)</summary><div class="columns">${input('model','Model (optional)',false,'text','maxlength="100" list="booking-models" placeholder="Choose or type your own"')}${input('serial','Serial number (optional)',false,'text','maxlength="100"')}</div></details>
       </fieldset>
       <fieldset data-service-group="installation" hidden disabled><legend>CCTV installation</legend>
       ${input('cameras','Number of cameras required',true,'number','min="1" max="999" step="1"')}
       ${select('premises','Type of premises',{Home:'House','Shop or office':'Shop or office',Other:'Other'})}
-      ${area('details','Problem or installation requirements',true)}</fieldset>
+      ${area('details','What do you need?',true)}</fieldset>
       <fieldset data-service-group="health" hidden disabled><legend>Health check</legend>
       ${input('quantity','Number of systems to check',true,'number','min="1" max="999" step="1"')}
-      ${input('device','Device type and model',false,'text','maxlength="200"')}${area('details','Anything you would like checked?')}
+      ${input('device','Device / brand',false,'text','maxlength="200" list="booking-devices" placeholder="Choose or type your own"')}
       <label class="booking-check"><input type="checkbox" name="working" value="yes" required><span>I confirm the device is currently working.</span></label></fieldset>
       ${select('method','Service method',{discuss:'Discuss by phone first',workshop:'Visit the workshop',onsite:'Service at my home or business'})}
+      <details class="booking-extra"><summary>More details (optional)</summary>
+      ${input('landmark','Nearby landmark',false,'text','maxlength="200"')}
+      ${select('contactLanguage','Preferred contact language',{ta:'தமிழ்',en:'English'})}
       ${input('date','Preferred date (optional)',false,'date')}
       ${select('contactTime','Convenient time to contact you',{'Any time':'Any time',Morning:'Morning',Afternoon:'Afternoon'})}
-      ${area('additional','Additional information')}
-      <label class="booking-check"><input type="checkbox" name="consent" value="yes" required><span>I agree that A2Z may use these details to handle my request. The appointment and charges must be confirmed before payment.</span></label>
+      ${area('additional','Additional information')}</details>
+      <datalist id="booking-devices"></datalist><datalist id="booking-models"></datalist>
+      <label class="booking-check"><input type="checkbox" name="consent" value="yes" required><span>A2Z may contact me about this request. Payment is due only after confirmation.</span></label>
       <div class="booking-trap" aria-hidden="true"><label>Leave this empty<input name="website" tabindex="-1" autocomplete="off"></label></div>
       <p id="booking-contact-expectation" class="notice" aria-live="polite">${contactMessage()}</p>\n      <button class="button" type="submit" ${endpoint(data)?'':'disabled'}>Submit service request ↗</button>
       <p id="booking-status" role="status" aria-live="polite"></p>
@@ -61,6 +64,11 @@ const A2ZBooking = (() => {
       const service=form.elements.service.value;
       const group=service==='installation'?'installation':service.endsWith('_health')?'health':'repair';
       form.querySelectorAll('[data-service-group]').forEach(el=>{el.hidden=el.dataset.serviceGroup!==group;el.disabled=el.hidden;});
+      const catalog = data.booking?.deviceSuggestions || {};
+      const key = service === 'computer_health' ? 'computers' : service === 'cctv_health' ? 'cctv' : service;
+      const options = catalog[key] || {};
+      form.querySelector('#booking-devices').innerHTML = (options.devices || []).map(value=>`<option value="${escape(value)}"></option>`).join('');
+      form.querySelector('#booking-models').innerHTML = (options.models || []).map(value=>`<option value="${escape(value)}"></option>`).join('');
       const method=form.elements.method;
       [...method.options].forEach(o=>o.disabled=group==='installation'&&o.value!=='onsite');
       if(group==='installation') method.value='onsite';

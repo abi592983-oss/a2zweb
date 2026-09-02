@@ -18,8 +18,8 @@
   "address": "First floor, A-35 main road, Paranthan",
   "mapsUrl": "https://maps.app.goo.gl/ZsAvmGePitzKKamq7",
   "plusCode": "CCP6+HJ, Parantan",
-  "phone": "",
-  "whatsapp": "",
+  "phone": "+94716263885",
+  "whatsapp": "94716263885",
   "email": "",
   "hero": {
     "title": "Good tech.\nBack to work.",
@@ -77,6 +77,79 @@
   "hours": "Contact us to arrange your visit",
   "booking": {
     "formUrl": "https://docs.google.com/forms/d/e/1FAIpQLSdP5et7Bd3WbQ178uMQX68hXDbsWwVEE_zAaCPb3TJFDZh3ZA/viewform",
-    "endpoint": "https://script.google.com/macros/s/AKfycbzRsXQzmzmwENLsYIO-Qz4PTgarNGj3-63GlnQE26C5UZzbvgtKRlf2VEfCYsKOM8Ei/exec"
-  }
+    "endpoint": "https://script.google.com/macros/s/AKfycbzRsXQzmzmwENLsYIO-Qz4PTgarNGj3-63GlnQE26C5UZzbvgtKRlf2VEfCYsKOM8Ei/exec",
+    "deviceSuggestions": {
+      "computers": {
+        "devices": [
+          "Laptop",
+          "Desktop PC",
+          "HP laptop",
+          "Dell laptop",
+          "Lenovo laptop",
+          "ASUS laptop",
+          "Acer laptop",
+          "MSI laptop",
+          "Apple MacBook",
+          "Custom-built PC"
+        ],
+        "models": [
+          "HP Pavilion",
+          "HP ProBook",
+          "HP EliteBook",
+          "Dell Inspiron",
+          "Dell Latitude",
+          "Dell XPS",
+          "Lenovo ThinkPad",
+          "Lenovo IdeaPad",
+          "ASUS VivoBook",
+          "ASUS ZenBook",
+          "Acer Aspire",
+          "Apple MacBook Air",
+          "Apple MacBook Pro"
+        ]
+      },
+      "cctv": {
+        "devices": [
+          "CCTV camera",
+          "DVR",
+          "NVR",
+          "Hikvision CCTV",
+          "Dahua CCTV",
+          "Uniview CCTV"
+        ],
+        "models": []
+      },
+      "printers": {
+        "devices": [
+          "HP printer",
+          "Canon printer",
+          "Epson printer",
+          "Brother printer",
+          "Laser printer",
+          "Inkjet printer"
+        ],
+        "models": [
+          "HP LaserJet",
+          "HP DeskJet",
+          "Canon PIXMA",
+          "Epson EcoTank",
+          "Brother HL",
+          "Brother DCP"
+        ]
+      },
+      "networks": {
+        "devices": [
+          "Wi-Fi router",
+          "Network switch",
+          "Access point",
+          "TP-Link router",
+          "D-Link router",
+          "Huawei router",
+          "MikroTik router"
+        ],
+        "models": []
+      }
+    }
+  },
+  "phoneDisplay": "071 626 3885"
 }

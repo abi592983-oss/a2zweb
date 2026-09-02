@@ -199,6 +199,16 @@
     "We will contact you soon.": "விரைவில் உங்களைத் தொடர்புகொள்வோம்.",
     "We will contact you on the next working day.": "அடுத்த வேலை நாளில் உங்களைத் தொடர்புகொள்வோம்.",
     "Your request has been received.": "உங்கள் கோரிக்கை கிடைக்கப்பெற்றுள்ளது.",
-    "Your appointment is not yet confirmed.": "உங்கள் சேவைக்கான முன்பதிவு இன்னும் உறுதிப்படுத்தப்படவில்லை."
+    "Your appointment is not yet confirmed.": "உங்கள் சேவைக்கான முன்பதிவு இன்னும் உறுதிப்படுத்தப்படவில்லை.",
+    "Book a service": "சேவையை முன்பதிவு செய்யுங்கள்",
+    "Tell us the essentials. We’ll call to confirm.": "முக்கிய விபரங்களைத் தாருங்கள். உறுதிப்படுத்துவதற்கு அழைப்போம்.",
+    "Device / brand": "சாதனம் / வர்த்தகப் பெயர்",
+    "Choose or type your own": "தெரிவு செய்யுங்கள் அல்லது தட்டச்சிடுங்கள்",
+    "What is the problem?": "என்ன பிரச்சினை?",
+    "What do you need?": "என்ன சேவை தேவை?",
+    "Model and serial number (optional)": "மாதிரி, தொடர் இலக்கம் (கட்டாயமில்லை)",
+    "More details (optional)": "மேலதிக விபரங்கள் (கட்டாயமில்லை)",
+    "A2Z may contact me about this request. Payment is due only after confirmation.": "இக்கோரிக்கை தொடர்பாக A2Z என்னைத் தொடர்புகொள்ளலாம். உறுதிப்படுத்திய பின்னரே பணம் செலுத்த வேண்டும்.",
+    "LKR {deposit} booking deposit · Pay after confirmation.": "முன்பதிவுக் கட்டணம் ரூ. {deposit} · உறுதிப்படுத்திய பின்னர் செலுத்துங்கள்."
   }
 }
