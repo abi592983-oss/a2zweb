@@ -195,6 +195,10 @@
     "Sending your request…": "உங்கள் கோரிக்கை அனுப்பப்படுகின்றது…",
     "Your request has been received. A2Z will contact you. Your appointment is not yet confirmed.": "உங்கள் கோரிக்கை கிடைத்துள்ளது. A2Z உங்களைத் தொடர்புகொள்ளும். முன்பதிவு இன்னும் உறுதிப்படுத்தப்படவில்லை.",
     "We could not confirm your submission. Your details are still here. Retry the same request, or contact A2Z before submitting elsewhere.": "உங்கள் கோரிக்கை கிடைத்ததை உறுதிப்படுத்த முடியவில்லை. உங்கள் விபரங்கள் இங்கேயே உள்ளன. அதே கோரிக்கையை மீண்டும் அனுப்ப முயற்சிக்கவும்; அல்லது வேறு வழியில் சமர்ப்பிப்பதற்கு முன்னர் A2Z இனைத் தொடர்புகொள்ளவும்.",
-    "House": "வீடு"
+    "House": "வீடு",
+    "We will contact you soon.": "விரைவில் உங்களைத் தொடர்புகொள்வோம்.",
+    "We will contact you on the next working day.": "அடுத்த வேலை நாளில் உங்களைத் தொடர்புகொள்வோம்.",
+    "Your request has been received.": "உங்கள் கோரிக்கை கிடைக்கப்பெற்றுள்ளது.",
+    "Your appointment is not yet confirmed.": "உங்கள் சேவைக்கான முன்பதிவு இன்னும் உறுதிப்படுத்தப்படவில்லை."
   }
 }

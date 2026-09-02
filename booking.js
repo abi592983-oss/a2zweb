@@ -6,6 +6,13 @@ const A2ZBooking = (() => {
   const input = (name,label,required=false,type='text',extra='') => `<div class="field"><label for="booking-${name}">${label}</label><input id="booking-${name}" name="${name}" type="${type}" ${required?'required':''} ${extra}></div>`;
   const area = (name,label,required=false) => `<div class="field"><label for="booking-${name}">${label}</label><textarea id="booking-${name}" name="${name}" maxlength="2000" ${required?'required':''}></textarea></div>`;
   const select = (name,label,values) => `<div class="field"><label for="booking-${name}">${label}</label><select id="booking-${name}" name="${name}" required>${Object.entries(values).map(([v,t])=>`<option value="${escape(v)}">${escape(t)}</option>`).join('')}</select></div>`;
+  let contactTimer;
+  const contactMessage = (now = new Date()) => {
+    const day = new Intl.DateTimeFormat('en-US', {timeZone:'Asia/Colombo', weekday:'short'}).format(now);
+    return day === 'Sat' || day === 'Sun'
+      ? 'We will contact you on the next working day.'
+      : 'We will contact you soon.';
+  };
   function render(data) {
     return `<form id="website-booking" class="panel">
       ${!endpoint(data)?'<p class="notice">Online submission is being connected. Please use the alternative form below for now.</p>':''}
@@ -33,16 +40,23 @@ const A2ZBooking = (() => {
       ${area('additional','Additional information')}
       <label class="booking-check"><input type="checkbox" name="consent" value="yes" required><span>I agree that A2Z may use these details to handle my request. The appointment and charges must be confirmed before payment.</span></label>
       <div class="booking-trap" aria-hidden="true"><label>Leave this empty<input name="website" tabindex="-1" autocomplete="off"></label></div>
-      <button class="button" type="submit" ${endpoint(data)?'':'disabled'}>Submit service request ↗</button>
+      <p id="booking-contact-expectation" class="notice" aria-live="polite">${contactMessage()}</p>\n      <button class="button" type="submit" ${endpoint(data)?'':'disabled'}>Submit service request ↗</button>
       <p id="booking-status" role="status" aria-live="polite"></p>
     </form>`;
   }
   function attach(data,translate) {
+    clearInterval(contactTimer);
     const form = document.querySelector('#website-booking');
     if (!form) return;
     const button = form.querySelector('button[type="submit"]');
     const status = form.querySelector('#booking-status');
     let busy=false, sent=false, requestId=null;
+    const expectation = form.querySelector('#booking-contact-expectation');
+    const refreshExpectation = () => {
+      if (!form.isConnected) { clearInterval(contactTimer); return; }
+      if (!sent) expectation.textContent = translate(contactMessage());
+    };
+    contactTimer = setInterval(refreshExpectation, 1000);
     const update=()=>{
       const service=form.elements.service.value;
       const group=service==='installation'?'installation':service.endsWith('_health')?'health':'repair';
@@ -62,6 +76,8 @@ const A2ZBooking = (() => {
       if(busy||sent||!form.reportValidity())return;
       const url=endpoint(data);
       if(!url){status.textContent=translate('Online submission is being connected. Please use the alternative form below for now.');return;}
+      refreshExpectation();
+      const submittedAt = new Date();
       busy=true;button.disabled=true;form.setAttribute('aria-busy','true');
       requestId ||= crypto.randomUUID();
       const body=new URLSearchParams(new FormData(form));body.set('requestId',requestId);
@@ -75,7 +91,9 @@ const A2ZBooking = (() => {
         const result=await response.json();
         if(result.ok!==true||result.requestId!==requestId)throw Error('Unconfirmed response');
         sent=true;
-        status.textContent=translate('Your request has been received. A2Z will contact you. Your appointment is not yet confirmed.');
+        expectation.textContent=translate(contactMessage(submittedAt));
+        clearInterval(contactTimer);
+        status.textContent=translate('Your request has been received.')+' '+translate(contactMessage(submittedAt))+' '+translate('Your appointment is not yet confirmed.');
         form.querySelectorAll('input,select,textarea').forEach(el=>el.disabled=true);
       } catch {
         status.textContent=translate('We could not confirm your submission. Your details are still here. Retry the same request, or contact A2Z before submitting elsewhere.');
