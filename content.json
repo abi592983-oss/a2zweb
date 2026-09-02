@@ -76,6 +76,7 @@
   ],
   "hours": "Contact us to arrange your visit",
   "booking": {
-    "formUrl": "https://docs.google.com/forms/d/e/1FAIpQLSdP5et7Bd3WbQ178uMQX68hXDbsWwVEE_zAaCPb3TJFDZh3ZA/viewform"
+    "formUrl": "https://docs.google.com/forms/d/e/1FAIpQLSdP5et7Bd3WbQ178uMQX68hXDbsWwVEE_zAaCPb3TJFDZh3ZA/viewform",
+    "endpoint": ""
   }
 }

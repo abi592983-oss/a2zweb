@@ -215,3 +215,6 @@ html:lang(ta) .panel,html:lang(ta) .card,html:lang(ta) .hero>div{min-width:0}
   html:lang(ta) .mobilebar a{min-width:0}
   html:lang(ta) .photo-note strong{font-size:18px}
 }
+
+/* Booking form */
+#website-booking fieldset{border:0;padding:0;margin:1.5rem 0;min-width:0}#website-booking legend{font-weight:700;margin-bottom:1rem}.booking-check{display:flex;align-items:flex-start;gap:.7rem;margin:1.3rem 0}.booking-check input{width:1.2rem;height:1.2rem;flex-shrink:0;margin-top:.3rem}.booking-trap{position:absolute;left:-10000px;width:1px;height:1px;overflow:hidden}#website-booking button:disabled{opacity:.55;cursor:not-allowed}#booking-status{overflow-wrap:anywhere}

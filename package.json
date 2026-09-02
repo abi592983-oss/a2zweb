@@ -2,6 +2,6 @@
   "name": "a2zweb",
   "private": true,
   "scripts": {
-    "build": "node --check app.js && node -e \"const fs=require('fs');JSON.parse(fs.readFileSync('content.json'));fs.mkdirSync('dist',{recursive:true});for(const p of ['index.html','style.css','app.js','content.json','translations.json'])fs.copyFileSync(p,'dist/'+p);if(fs.existsSync('images'))fs.cpSync('images','dist/images',{recursive:true})\""
+    "build": "node --check app.js && node --check booking.js && node -e \"const fs=require('fs');JSON.parse(fs.readFileSync('content.json'));fs.mkdirSync('dist',{recursive:true});for(const p of ['index.html','style.css','app.js','booking.js','content.json','translations.json'])fs.copyFileSync(p,'dist/'+p);if(fs.existsSync('images'))fs.cpSync('images','dist/images',{recursive:true})\""
   }
 }
