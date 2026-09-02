@@ -261,3 +261,12 @@ html:lang(ta) .panel,html:lang(ta) .card,html:lang(ta) .hero>div{min-width:0}
   }
   footer{padding-bottom:calc(120px + env(safe-area-inset-bottom))}
 }
+
+/* Visible editable device/model pickers, including mobile browsers. */
+.booking-picker{position:relative;display:flex;min-width:0}
+.booking-picker>input{min-width:0;padding-right:54px}
+.booking-picker-toggle{position:absolute;right:1px;top:1px;bottom:1px;width:46px;padding:0;border:0;border-left:1px solid var(--line);border-radius:0 4px 4px 0;background:var(--surface);color:var(--ink);font-size:22px;cursor:pointer}
+.booking-choices{position:absolute;top:calc(100% + 4px);left:0;right:0;z-index:10;max-height:240px;overflow-y:auto;overscroll-behavior:contain;border:1px solid var(--line);border-radius:5px;background:white;box-shadow:0 6px 18px #0002}
+.booking-choices [role="option"]{padding:12px;min-height:44px;cursor:pointer;overflow-wrap:anywhere}
+.booking-choices [role="option"]:hover,.booking-choices [aria-selected="true"]{background:var(--surface);box-shadow:inset 3px 0 var(--accent)}
+.booking-picker-empty{margin:0;padding:12px;font-size:14px}

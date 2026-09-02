@@ -47,6 +47,73 @@ const A2ZBooking = (() => {
       <p id="booking-status" role="status" aria-live="polite"></p>
     </form>`;
   }
+
+  // A visible, keyboard-accessible picker rather than browser-dependent datalist UI.
+  function attachPicker(input, source, translate) {
+    const box = document.createElement('div');
+    box.className = 'booking-picker';
+    input.before(box);box.append(input);
+    input.removeAttribute('list');
+    input.setAttribute('role','combobox');
+    input.setAttribute('aria-autocomplete','list');
+    input.setAttribute('autocomplete','off');
+    const list = document.createElement('div');
+    list.id = input.id + '-choices';list.className = 'booking-choices';
+    list.setAttribute('role','listbox');list.hidden = true;
+    const toggle = document.createElement('button');
+    toggle.type = 'button';toggle.className = 'booking-picker-toggle';
+    toggle.textContent = '▾';toggle.setAttribute('aria-label','Show suggestions');
+    toggle.setAttribute('aria-controls',list.id);
+    input.setAttribute('aria-controls',list.id);
+    box.append(toggle,list);
+    let values=[], active=-1;
+    const close=()=>{list.hidden=true;input.setAttribute('aria-expanded','false');toggle.setAttribute('aria-expanded','false');input.removeAttribute('aria-activedescendant');active=-1;};
+    const highlight=()=>{
+      [...list.children].forEach((option,i)=>option.setAttribute('aria-selected',String(i===active)));
+      if(active>=0){input.setAttribute('aria-activedescendant',list.children[active].id);list.children[active].scrollIntoView({block:'nearest'});}
+      else input.removeAttribute('aria-activedescendant');
+    };
+    const choose=index=>{
+      if(input.disabled || !values[index])return;
+      input.value=values[index];close();input.focus();
+      input.dispatchEvent(new Event('change',{bubbles:true}));
+    };
+    const open=(showAll=false)=>{
+      if(input.disabled || input.closest('fieldset[disabled]'))return;
+      const query=showAll?'':input.value.trim().toLocaleLowerCase();
+      values=[...source.options].map(option=>option.value).filter(value=>value.toLocaleLowerCase().includes(query));
+      list.replaceChildren();active=-1;
+      values.forEach((value,index)=>{
+        const option=document.createElement('div');
+        option.id=list.id+'-'+index;option.setAttribute('role','option');option.setAttribute('aria-selected','false');
+        option.textContent=value;
+        option.addEventListener('pointerdown',event=>event.preventDefault());
+        option.addEventListener('click',()=>choose(index));
+        list.append(option);
+      });
+      if(!values.length){
+        const message=document.createElement('p');message.className='booking-picker-empty';
+        message.textContent=translate('No match — you can use your own entry.');list.append(message);
+      }
+      list.hidden=false;input.setAttribute('aria-expanded','true');toggle.setAttribute('aria-expanded','true');
+    };
+    toggle.addEventListener('click',()=>{if(list.hidden){input.focus();open(true);}else close();});
+    input.addEventListener('input',()=>open());
+    input.addEventListener('click',()=>open(!input.value));
+    input.addEventListener('keydown',event=>{
+      if(event.key==='Escape'){event.preventDefault();close();}
+      else if(event.key==='ArrowDown'||event.key==='ArrowUp'){
+        event.preventDefault();if(list.hidden)open(true);
+        if(values.length){active=(active+(event.key==='ArrowDown'?1:-1)+values.length)%values.length;highlight();}
+      }else if(event.key==='Enter'&&!list.hidden){
+        event.preventDefault();if(active>=0)choose(active);else close();
+      }else if(event.key==='Tab')close();
+    });
+    box.addEventListener('focusout',event=>{if(!box.contains(event.relatedTarget))close();});
+    input.form.elements.service.addEventListener('change',close);
+    close();
+  }
+
   function attach(data,translate) {
     clearInterval(contactTimer);
     const form = document.querySelector('#website-booking');
@@ -79,6 +146,10 @@ const A2ZBooking = (() => {
       if(el.id){el.id+='-'+group.dataset.serviceGroup;if(label)label.htmlFor=el.id;}
     }));
     form.elements.service.addEventListener('change',update);update();
+    form.querySelectorAll('input[list]').forEach(input=>{
+      const source=form.querySelector('#'+input.getAttribute('list'));
+      if(source)attachPicker(input,source,translate);
+    });
     form.addEventListener('submit',async e=>{
       e.preventDefault();
       if(busy||sent||!form.reportValidity())return;
@@ -102,7 +173,7 @@ const A2ZBooking = (() => {
         expectation.textContent=translate(contactMessage(submittedAt));
         clearInterval(contactTimer);
         status.textContent=translate('Your request has been received.')+' '+translate(contactMessage(submittedAt))+' '+translate('Your appointment is not yet confirmed.');
-        form.querySelectorAll('input,select,textarea').forEach(el=>el.disabled=true);
+        form.querySelectorAll('input,select,textarea,.booking-picker-toggle').forEach(el=>el.disabled=true);
       } catch {
         status.textContent=translate('We could not confirm your submission. Your details are still here. Retry the same request, or contact A2Z before submitting elsewhere.');
       } finally {clearTimeout(timeout);busy=false;button.disabled=sent;form.removeAttribute('aria-busy');}
