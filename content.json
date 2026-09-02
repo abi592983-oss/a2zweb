@@ -1,8 +1,19 @@
 {
   "defaultLanguage": "ta",
   "brand": "A2Z Tec Solutions",
-  "logo": {"src": "./images/a2z-logo.png", "alt": "A2Z Tec Solutions (Pvt) Ltd"},
-  "theme": {"ink":"#141414","paper":"#ffffff","surface":"#f5f5f5","line":"#dedede","accent":"#ff5a00","accentText":"#b83d00","muted":"#595959"},
+  "logo": {
+    "src": "./images/a2z-logo.png",
+    "alt": "A2Z Tec Solutions (Pvt) Ltd"
+  },
+  "theme": {
+    "ink": "#141414",
+    "paper": "#ffffff",
+    "surface": "#f5f5f5",
+    "line": "#dedede",
+    "accent": "#ff5a00",
+    "accentText": "#b83d00",
+    "muted": "#595959"
+  },
   "location": "Paranthan, Northern Sri Lanka",
   "address": "First floor, A-35 main road, Paranthan",
   "mapsUrl": "https://maps.app.goo.gl/ZsAvmGePitzKKamq7",
@@ -10,16 +21,61 @@
   "phone": "",
   "whatsapp": "",
   "email": "",
-  "hero": {"title": "Good tech.\nBack to work.", "description": "Computer repairs, CCTV and practical IT support. Right here in Paranthan.", "image": "https://images.unsplash.com/photo-1580090919269-12b0c103ba26?auto=format&fit=crop&w=1400&q=85"},
+  "hero": {
+    "title": "Good tech.\nBack to work.",
+    "description": "Computer repairs, CCTV and practical IT support. Right here in Paranthan.",
+    "image": "https://images.unsplash.com/photo-1580090919269-12b0c103ba26?auto=format&fit=crop&w=1400&q=85"
+  },
   "services": [
-    {"id":"computers","name":"Computers & laptops","tag":"Repair · Upgrade · Maintain","symbol":"01","description":"Troubleshooting, OS installation, hardware upgrades and preventive maintenance.","active":true},
-    {"id":"cctv","name":"CCTV systems","tag":"Install · Repair · Check","symbol":"02","description":"New camera installations and servicing for DVR, NVR and existing CCTV systems.","active":true},
-    {"id":"printers","name":"Printers","tag":"Diagnose · Repair · Service","symbol":"03","description":"Get help with print problems, connectivity and routine printer servicing.","active":true},
-    {"id":"networks","name":"Wi-Fi & networking","tag":"Connect · Configure · Improve","symbol":"04","description":"Practical Wi-Fi and wired network setup for homes and small businesses.","active":true}
+    {
+      "id": "computers",
+      "name": "Computers & laptops",
+      "tag": "Repair · Upgrade · Maintain",
+      "symbol": "01",
+      "description": "Troubleshooting, OS installation, hardware upgrades and preventive maintenance.",
+      "active": true
+    },
+    {
+      "id": "cctv",
+      "name": "CCTV systems",
+      "tag": "Install · Repair · Check",
+      "symbol": "02",
+      "description": "New camera installations and servicing for DVR, NVR and existing CCTV systems.",
+      "active": true
+    },
+    {
+      "id": "printers",
+      "name": "Printers",
+      "tag": "Diagnose · Repair · Service",
+      "symbol": "03",
+      "description": "Get help with print problems, connectivity and routine printer servicing.",
+      "active": true
+    },
+    {
+      "id": "networks",
+      "name": "Wi-Fi & networking",
+      "tag": "Connect · Configure · Improve",
+      "symbol": "04",
+      "description": "Practical Wi-Fi and wired network setup for homes and small businesses.",
+      "active": true
+    }
   ],
   "gallery": [],
   "deposit": 500,
-  "healthChecks": ["Computer & laptop health", "CCTV system health"],
-  "healthItems": ["Storage condition", "Temperatures & cooling", "Battery condition, where supported", "System errors", "Camera coverage & recording", "Recommended next steps"],
-  "hours": "Contact us to arrange your visit"
+  "healthChecks": [
+    "Computer & laptop health",
+    "CCTV system health"
+  ],
+  "healthItems": [
+    "Storage condition",
+    "Temperatures & cooling",
+    "Battery condition, where supported",
+    "System errors",
+    "Camera coverage & recording",
+    "Recommended next steps"
+  ],
+  "hours": "Contact us to arrange your visit",
+  "booking": {
+    "formUrl": "https://docs.google.com/forms/d/e/1FAIpQLSdP5et7Bd3WbQ178uMQX68hXDbsWwVEE_zAaCPb3TJFDZh3ZA/viewform"
+  }
 }
