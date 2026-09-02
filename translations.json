@@ -159,6 +159,14 @@
     "Choose a service or return to the home page.": "ஒரு சேவையைத் தெரிவுசெய்யுங்கள் அல்லது முகப்புப் பக்கத்திற்குத் திரும்புங்கள்.",
     "Back to home": "முகப்பிற்குத் திரும்புக",
     "Unable to load the site.": "இணையத்தளத்தை ஏற்ற முடியவில்லை.",
-    "Please refresh to try again.": "மீண்டும் முயற்சிக்கப் பக்கத்தைப் புதுப்பியுங்கள்."
+    "Please refresh to try again.": "மீண்டும் முயற்சிக்கப் பக்கத்தைப் புதுப்பியுங்கள்.",
+    "Complete the booking form. A visit is confirmed only after we contact you.": "முன்பதிவுப் படிவத்தை நிரப்புங்கள். நாம் உங்களைத் தொடர்புகொண்ட பின்னரே வருகை உறுதிப்படுத்தப்படும்.",
+    "SERVICE REQUEST": "சேவைக் கோரிக்கை",
+    "Book a repair, installation or health check.": "திருத்தம், நிறுவல் அல்லது நிலைப் பரிசோதனைக்கு முன்பதிவு செய்யுங்கள்.",
+    "Have your contact details, service address and device details ready.": "உங்கள் தொடர்பு விபரங்கள், சேவை தேவைப்படும் முகவரி மற்றும் சாதனத்தின் விபரங்களைத் தயாராக வைத்திருங்கள்.",
+    "Open booking form ↗": "முன்பதிவுப் படிவத்தைத் திறக்க ↗",
+    "Complete and submit your request in Google Forms.": "Google Forms இல் உங்கள் கோரிக்கையை நிரப்பிச் சமர்ப்பியுங்கள்.",
+    "Booking details are submitted through Google Forms and used by A2Z to contact you and arrange your service. Google processes the form under its own privacy terms.": "முன்பதிவு விபரங்கள் Google Forms மூலம் சமர்ப்பிக்கப்படுகின்றன. உங்களைத் தொடர்புகொண்டு சேவையை ஏற்பாடு செய்வதற்கு A2Z இவ்விபரங்களைப் பயன்படுத்தும். படிவத்தில் வழங்கப்படும் விபரங்கள் Google இன் தனியுரிமை விதிமுறைகளுக்கு உட்படும்.",
+    "For a repair, installation or health check, open the form from our booking page.": "திருத்தம், நிறுவல் அல்லது நிலைப் பரிசோதனைக்காக எமது முன்பதிவுப் பக்கத்திலுள்ள படிவத்தைத் திறக்கவும்."
   }
 }
