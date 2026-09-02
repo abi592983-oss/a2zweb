@@ -31,7 +31,7 @@ const A2ZBooking = (() => {
       ${area('details','What do you need?',true)}</fieldset>
       <fieldset data-service-group="health" hidden disabled><legend>Health check</legend>
       ${input('quantity','Number of systems to check',true,'number','min="1" max="999" step="1"')}
-      ${input('device','Device / brand',false,'text','maxlength="200" list="booking-devices" placeholder="Choose or type your own"')}
+      <details class="booking-extra"><summary>More details (optional)</summary>${input('device','Device / brand',false,'text','maxlength="200" list="booking-devices" placeholder="Choose or type your own"')}</details>
       <label class="booking-check"><input type="checkbox" name="working" value="yes" required><span>I confirm the device is currently working.</span></label></fieldset>
       ${select('method','Service method',{discuss:'Discuss by phone first',workshop:'Visit the workshop',onsite:'Service at my home or business'})}
       <details class="booking-extra"><summary>More details (optional)</summary>
