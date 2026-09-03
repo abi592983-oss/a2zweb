@@ -13,14 +13,16 @@ const A2ZBooking = (() => {
       ? 'We will contact you on the next working day.'
       : 'We will contact you soon.';
   };
-  function render(data) {
-    return `<form id="website-booking" class="panel">
+  function render(data, fixedService = '') {
+    const isHealth = ['computer_health','cctv_health'].includes(fixedService);
+    const appointmentServices = Object.fromEntries(Object.entries(services).filter(([key])=>!key.endsWith('_health')));
+    return `<form id="website-booking" class="panel" ${isHealth ? `data-fixed-service="${fixedService}"` : ''}>
       ${!endpoint(data)?'<p class="notice">Online submission is being connected. Please use the alternative form below for now.</p>':''}
-      ${select('service','Service',services)}
+      ${isHealth ? `<input type="hidden" name="service" value="${fixedService}"><p class="badge">${services[fixedService]}</p>` : select('service','Service',appointmentServices)}
       <div class="columns">${input('name','Your name',true,'text','autocomplete="name" maxlength="100"')}${input('phone','Phone number',true,'tel','autocomplete="tel" pattern="(0[0-9]{9}|[+]94[0-9]{9}|94[0-9]{9})" placeholder="0771234567"')}</div>
       ${input('email','Email',true,'email','autocomplete="email" maxlength="254"')}
       ${input('address','Service address',true,'text','autocomplete="street-address" maxlength="2000"')}
-      <fieldset data-service-group="repair"><legend>Device details</legend>
+      <fieldset data-service-group="repair" ${isHealth?'hidden disabled':''}><legend>Device details</legend>
       ${input('device','Device / brand',true,'text','maxlength="200" list="booking-devices" placeholder="Choose or type your own"')}
       ${area('details','What is the problem?',true)}
       <details class="booking-extra"><summary>Model and serial number (optional)</summary><div class="columns">${input('model','Model (optional)',false,'text','maxlength="100" list="booking-models" placeholder="Choose or type your own"')}${input('serial','Serial number (optional)',false,'text','maxlength="100"')}</div></details>
@@ -29,8 +31,8 @@ const A2ZBooking = (() => {
       ${input('cameras','Number of cameras required',true,'number','min="1" max="999" step="1"')}
       ${select('premises','Type of premises',{Home:'House','Shop or office':'Shop or office',Other:'Other'})}
       ${area('details','What do you need?',true)}</fieldset>
-      <fieldset data-service-group="health" hidden disabled><legend>Health check</legend>
-      ${input('quantity','Number of systems to check',true,'number','min="1" max="999" step="1"')}
+      <fieldset data-service-group="health" ${isHealth?'':'hidden disabled'}><legend>Health check</legend>
+      ${input('quantity','Number of systems to check',true,'number','min="1" max="999" step="1" value="1"')}
       <details class="booking-extra"><summary>More details (optional)</summary>${input('device','Device / brand',false,'text','maxlength="200" list="booking-devices" placeholder="Choose or type your own"')}</details>
       <label class="booking-check"><input type="checkbox" name="working" value="yes" required><span>I confirm the device is currently working.</span></label></fieldset>
       ${select('method','Service method',{discuss:'Discuss by phone first',workshop:'Visit the workshop',onsite:'Service at my home or business'})}
@@ -128,7 +130,7 @@ const A2ZBooking = (() => {
     };
     contactTimer = setInterval(refreshExpectation, 1000);
     const update=()=>{
-      const service=form.elements.service.value;
+      const service=form.dataset.fixedService || form.elements.service.value;
       const group=service==='installation'?'installation':service.endsWith('_health')?'health':'repair';
       form.querySelectorAll('[data-service-group]').forEach(el=>{el.hidden=el.dataset.serviceGroup!==group;el.disabled=el.hidden;});
       const catalog = data.booking?.deviceSuggestions || {};
@@ -160,6 +162,7 @@ const A2ZBooking = (() => {
       busy=true;button.disabled=true;form.setAttribute('aria-busy','true');
       requestId ||= crypto.randomUUID();
       const body=new URLSearchParams(new FormData(form));body.set('requestId',requestId);
+      if(form.dataset.fixedService)body.set('service',form.dataset.fixedService);
       status.textContent=translate('Sending your request…');
       const controller=new AbortController();const timeout=setTimeout(()=>controller.abort(),45000);
       try {
