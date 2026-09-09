@@ -54,7 +54,6 @@ function verifyWebsiteBackend() {
 
 function doGet(e) {
   try {
-    if (e && e.parameter && e.parameter.action === 'erp_pull') return a2zPullForErp_(e.parameter);
     return a2zJson_({ok:true, service:'A2Z booking backend', version:2});
   } catch (error) {
     return a2zJson_({ok:false, error:String(error.message || error)});
@@ -331,6 +330,7 @@ function doPost(e) {
     const contentType = e && e.postData ? String(e.postData.type || '') : '';
     if (contentType.indexOf('application/json') >= 0) {
       const payload = JSON.parse(e.postData.contents || '{}');
+      if (payload.action === 'erp_pull') return a2zPullForErp_(payload);
       if (payload.action === 'erp_ack') return a2zAcknowledge_(payload);
       if (payload.action === 'archive_health_report') return a2zArchiveHealth_(payload);
       return a2zJson_({ok:false,error:'Unsupported integration action.'});
