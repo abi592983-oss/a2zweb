@@ -25,7 +25,7 @@ const A2ZBooking = (() => {
       <fieldset data-service-group="repair" ${isHealth?'hidden disabled':''}><legend>Device details</legend>
       ${input('device','Device / brand',true,'text','maxlength="200" list="booking-devices" placeholder="Choose or type your own"')}
       ${area('details','What is the problem?',true)}
-      <details class="booking-extra"><summary>Model and serial number (optional)</summary><div class="columns">${input('model','Model (optional)',false,'text','maxlength="100" list="booking-models" placeholder="Choose or type your own"')}${input('serial','Serial number (optional)',false,'text','maxlength="100"')}</div></details>
+      <details class="booking-extra" open><summary>Model and serial number</summary><div class="columns">${input('model','Model (optional)',false,'text','maxlength="100" list="booking-models" placeholder="Choose or type your own"')}${input('serial','Serial number',true,'text','maxlength="100"')}</div></details>
       </fieldset>
       <fieldset data-service-group="installation" hidden disabled><legend>CCTV installation</legend>
       ${input('cameras','Number of cameras required',true,'number','min="1" max="999" step="1"')}
@@ -33,7 +33,8 @@ const A2ZBooking = (() => {
       ${area('details','What do you need?',true)}</fieldset>
       <fieldset data-service-group="health" ${isHealth?'':'hidden disabled'}><legend>Health check</legend>
       ${input('quantity','Number of systems to check',true,'number','min="1" max="999" step="1" value="1"')}
-      <details class="booking-extra"><summary>More details (optional)</summary>${input('device','Device / brand',false,'text','maxlength="200" list="booking-devices" placeholder="Choose or type your own"')}</details>
+      <div class="columns">${input('device','Device / brand',true,'text','maxlength="200" list="booking-devices" placeholder="Choose or type your own"')}${input('model','Model (optional)',false,'text','maxlength="100" list="booking-models"')}</div>
+      ${input('serial','Serial number',true,'text','maxlength="100"')}
       <label class="booking-check"><input type="checkbox" name="working" value="yes" required><span>I confirm the device is currently working.</span></label></fieldset>
       ${select('method','Service method',{discuss:'Discuss by phone first',workshop:'Visit the workshop',onsite:'Service at my home or business'})}
       <details class="booking-extra"><summary>More details (optional)</summary>
