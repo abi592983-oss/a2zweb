@@ -36,6 +36,7 @@ accepting=true;
 const integrationPost=payload=>context.doPost({postData:{type:'application/json',contents:JSON.stringify(payload),length:JSON.stringify(payload).length}});
 const pull=integrationPost({action:'erp_pull',token:'test-sync-secret',limit:100});
 assert.equal(pull.ok,true,pull.error);assert.equal(pull.rows.length,7);assert(pull.rows.every(row=>row.external_reference&&row.customer_name));assert(pull.rows.filter(row=>row.service_category!=='installation').every(row=>row.serial_number));
+assert(pull.rows.filter(row=>row.service_category==='health_check').every(row=>row.device_brand==='Laptop'&&row.device_model==='TEST-MODEL'));
 const firstReference=pull.rows[0].external_reference;
 assert.equal(integrationPost({action:'erp_ack',token:'wrong',external_references:[firstReference]}).ok,false);
 assert.equal(integrationPost({action:'erp_ack',token:'test-sync-secret',external_references:[firstReference]}).acknowledged,1);
