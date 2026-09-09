@@ -115,6 +115,8 @@ function a2zNormalizeFormResponse_(response) {
   const mode = method.indexOf('home or business') >= 0 ? 'doorstep' : method.indexOf('workshop') >= 0 ? 'shop' : 'shop';
   const additional = a2zText_(value['Additional information']);
   const websiteMatch = additional.match(/Website request:\s*([a-f0-9-]{36})/i);
+  const combinedDevice = a2zText_(value['Device type and model']);
+  const combinedModel = combinedDevice.match(/\s\|\sModel:\s*(.+)$/i);
   const details = [
     value['Describe the fault or help required'],
     value['Installation requirements'],
@@ -136,8 +138,8 @@ function a2zNormalizeFormResponse_(response) {
     problem_description: details || A2Z_SERVICES[serviceKey] || serviceLabel,
     serial_number: a2zText_(value['Serial number']),
     device_type: a2zDeviceType_(serviceKey),
-    device_brand: a2zText_(value['Device name or type'] || value['Device type and model']),
-    device_model: a2zText_(value['Model number']),
+    device_brand: a2zText_(value['Device name or type'] || combinedDevice.replace(/\s\|\sModel:\s*.+$/i, '')),
+    device_model: a2zText_(value['Model number'] || (combinedModel && combinedModel[1])),
     form_response_id: response.getId(),
     form_submitted_at: response.getTimestamp().toISOString()
   };
@@ -266,7 +268,7 @@ function a2zResponse_(form, p) {
   if (p.service === 'installation') {
     text('Number of cameras required',p.cameras); choice('Type of premises',p.premises); text('Installation requirements',p.details);
   } else if (p.service.endsWith('_health')) {
-    text('Number of computers or CCTV systems to check',p.quantity); text('Device type and model',p.device);
+    text('Number of computers or CCTV systems to check',p.quantity); text('Device type and model',p.device + (p.model ? ' | Model: ' + p.model : ''));
     text('Serial number',p.serial); text('Anything you would like checked?',p.details);
     choice('Device operation','I confirm the device is currently working',true);
   } else {
