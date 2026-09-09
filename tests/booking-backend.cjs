@@ -16,7 +16,7 @@ let accepting=true;
 const form={getItems:()=>items,isAcceptingResponses:()=>accepting,getPublishedUrl:()=> 'https://docs.google.com/forms/d/e/1FAIpQLSdP5et7Bd3WbQ178uMQX68hXDbsWwVEE_zAaCPb3TJFDZh3ZA/viewform',getResponses:()=>saved,createResponse(){const answers=[];return {withItemResponse(i){answers.push(i);return this},submit(){const r={getId:()=>String(saved.length),getItemResponses:()=>answers};saved.push(r);return r}}}};
 const context={console,Date,FormApp:{openById:id=>{assert.equal(id,'existing-form');return form},ItemType:{PARAGRAPH_TEXT:'PARAGRAPH_TEXT'}},PropertiesService:{getScriptProperties:()=>({getProperty:k=>properties[k],getProperties:()=>({...properties}),setProperty:(k,v)=>properties[k]=v,deleteProperty:k=>delete properties[k]})},LockService:{getScriptLock:()=>({tryLock:()=>true,hasLock:()=>true,releaseLock(){}})},ContentService:{MimeType:{JSON:'json'},createTextOutput:s=>({setMimeType:()=>JSON.parse(s)})}};
 vm.createContext(context);vm.runInContext(fs.readFileSync('backend/BookingBackend.gs','utf8'),context);
-let seq=0;const base=()=>({requestId:`00000000-0000-4000-8000-${String(++seq).padStart(12,'0')}`,name:'TEST',phone:'0000000000',email:'test@example.com',address:'TEST ONLY',contactLanguage:'ta',service:'computers',device:'Laptop',details:'Connection test',method:'discuss',contactTime:'Any time',consent:'yes',date:'2026-10-05'});
+let seq=0;const base=()=>({requestId:`00000000-0000-4000-8000-${String(++seq).padStart(12,'0')}`,name:'TEST',phone:'0000000000',email:'test@example.com',address:'TEST ONLY',contactLanguage:'ta',service:'computers',device:'Laptop',model:'TEST-MODEL',serial:`TEST-SERIAL-${seq}`,details:'Connection test',method:'discuss',contactTime:'Any time',consent:'yes',date:'2026-10-05'});
 const post=p=>context.doPost({parameter:p,postData:{length:JSON.stringify(p).length}});
 for(const service of ['computers','cctv','printers','networks','installation','computer_health','cctv_health']){
  const p={...base(),service,cameras:'4',premises:'Home',quantity:'2',working:'yes'};if(service==='installation')p.method='onsite';
@@ -29,6 +29,6 @@ for(const service of ['computers','cctv','printers','networks','installation','c
  properties['WEB_'+p.requestId]=JSON.stringify({at:Date.now()});assert.equal(post(p).ok,true);assert.equal(saved.length,count);
 }
 const before=saved.length;
-for(const change of [{phone:'abc'},{consent:''},{email:'bad'},{service:'unknown'},{date:'2026-02-31'},{website:'bot'},{service:'installation',cameras:'0'},{service:'computer_health',quantity:'1',working:''}])assert.equal(post({...base(),...change}).ok,false);
+for(const change of [{phone:'abc'},{consent:''},{email:'bad'},{service:'unknown'},{date:'2026-02-31'},{website:'bot'},{serial:''},{service:'installation',cameras:'0'},{service:'computer_health',quantity:'1',working:''}])assert.equal(post({...base(),...change}).ok,false);
 accepting=false;assert.equal(post(base()).ok,false);assert.equal(saved.length,before);
 console.log('PASS: seven services, conditional mappings, date type, acknowledgement recovery, duplicate prevention, invalid input and closed-form rejection.');
