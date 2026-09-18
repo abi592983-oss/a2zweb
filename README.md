@@ -30,6 +30,12 @@ Run `python3 -m http.server 8000` and open http://localhost:8000. No dependencie
 
 The website files are in the repository root. In Settings → Pages, select “Deploy from a branch”, branch “main”, folder “/ (root)”, and Save. No npm installation or build is required. The .nojekyll file disables Jekyll processing.
 
+## Search visibility
+
+The initial HTML contains the core service and location content so crawlers and visitors can understand the business before JavaScript runs. Keep the canonical URL, social metadata, JSON-LD business details, `robots.txt`, and `sitemap.xml` aligned with the live domain and current contact information. Hash routes such as `#services` are sections of the single canonical page, not separate sitemap URLs.
+
+After publishing, submit `https://a2ztec.online/sitemap.xml` in Google Search Console and use URL Inspection to request indexing of the home page. Run `npm test` for static SEO checks, and `npm run build` to verify and copy all public assets to `dist`.
+
 GitHub Pages must be enabled in repository settings. This source change does not enable Pages by itself. Private repositories require a GitHub plan supporting Pages for private repositories; otherwise the repository must be made public by its owner.
 
 Edit content.json for content and image paths. Relative URLs support the /a2zweb/ project path. For Netlify, publish the repository root. The optional npm run build command copies the website into dist for the existing ChatGPT Sites preview configuration; it does not deploy either host.

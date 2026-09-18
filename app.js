@@ -71,9 +71,27 @@ function updatePageLanguage() {
     button.setAttribute('aria-pressed', String(button.dataset.language === language));
   });
   const route = location.hash.slice(1).split('/')[0] || 'home';
-  const titles = {home:'Home',services:'Services',service:'Service',health:'Health check','health-booking':'Health-check booking',work:'Our work',about:'About',contact:'Contact',booking:'Booking',policies:'Policies'};
-  document.title = translate(titles[route] || 'PAGE NOT FOUND') + ' · A2Z Tec Solutions';
-  document.querySelector('meta[name="description"]').content = translate(data.hero.description);
+  const titles = {
+    home:'A2Z Tec Solutions | Computer & CCTV Service in Paranthan',
+    services:'Computer, CCTV, Printer & Network Services | A2Z Tec',
+    service:'Technology Service | A2Z Tec Solutions Paranthan',
+    health:'Computer & CCTV Health Checks | A2Z Tec',
+    'health-booking':'Book a Health Check | A2Z Tec Solutions',
+    work:'Our Technical Work | A2Z Tec Solutions',
+    about:'About A2Z Tec Solutions | Paranthan',
+    contact:'Contact A2Z Tec Solutions | Paranthan',
+    booking:'Book a Technology Service | A2Z Tec Solutions',
+    policies:'Service Information | A2Z Tec Solutions'
+  };
+  const descriptions = {
+    home:'Computer and laptop repair, CCTV installation and service, printer repair, Wi-Fi and networking support in Paranthan and Kilinochchi.',
+    services:'Computer, CCTV, printer and networking services for homes and small businesses in Paranthan and Kilinochchi.',
+    health:'Preventive health checks for supported working computers, laptops and CCTV systems in Paranthan.',
+    contact:'Call, WhatsApp or visit A2Z Tec Solutions on Mullaitivu Road, Paranthan, Kilinochchi.',
+    booking:'Request a computer repair, CCTV, printer or networking appointment with A2Z Tec Solutions in Paranthan.'
+  };
+  document.title = translate(titles[route] || 'Page not found | A2Z Tec Solutions');
+  document.querySelector('meta[name="description"]').content = translate(descriptions[route] || descriptions.home);
 }
 function setLanguage(next, updateURL = true) {
   language = next === 'ta' && translations.ta ? 'ta' : 'en';
@@ -117,7 +135,7 @@ else if(route==='work'){html=`<section class="wrap">${intro('FROM OUR WORKSHOP',
 else if(route==='about'){html=`<section class="wrap">${intro('A2Z TEC SOLUTIONS (PVT) LTD','Technical know-how.\nLocal understanding.','Based in Paranthan, we help homes and small businesses with the technology they rely on.')}<div class="columns"><div class="panel"><h3>Hands-on experience</h3><p>Computer hardware, networking and CCTV support, backed by NVQ Level 4 qualifications in Computer Hardware & Network Technology and ICT.</p></div><div class="panel"><h3>A place to bring your tech</h3><p>${esc(data.address)}. Parking available.</p><p>Talk to us about workshop repairs, installations and on-site support.</p>${link('#contact','Plan your visit ↗')}</div></div></section>`}
 else if(route==='contact'){html=`<section class="wrap">${intro('LET’S TALK','Your local tech stop.','Find us at Amman Kovilady, on Mullaitivu Road, Paranthan.')}<div class="columns"><div class="panel"><h3>Visit the workshop</h3><p>${esc(data.address)}</p><p>Parking available.</p><p>${esc(data.hours)}</p><a class="button outline" target="_blank" rel="noopener" href="${safeURL(data.mapsUrl || ('https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(data.plusCode || data.address)))}">Find our shop on Google Maps ↗</a>${data.plusCode ? `<p class="note">Plus Code: ${esc(data.plusCode)}</p>` : ''}</div><div class="panel"><h3>Get in touch</h3><div class="actions">${contacts()}</div>${!data.phone&&!data.whatsapp&&!data.email?'<p>Contact details will be available here soon.</p>':''}<p>Choose appointment booking for repairs, or health-check booking for working systems.</p>${link('#booking','Book an appointment')}${link('#health','Book a health check','outline')}</div></div></section>`}
 else if(route==='policies'){html=`<section class="wrap">${intro('BEFORE YOU BOOK','Service information','A few practical things to know.')}<div class="panel"><h3>Appointments & deposits</h3><p>The standard booking deposit is LKR ${esc(data.deposit)}. Appointments and payment instructions must be confirmed with A2Z before you pay. Cancellation and refund terms will be confirmed before taking payment.</p><h3>Diagnosis & health checks</h3><p>Health checks are for working systems. A faulty or non-working device requires a repair diagnosis. Travel charges, repair scope and pricing are confirmed for each job.</p><h3>Warranty</h3><p>Warranty coverage depends on the work performed and parts supplied. Confirm the applicable terms before authorising the job.</p><h3>Your details</h3><p>Booking details are submitted through Google Forms and used by A2Z to contact you and arrange your service. Google processes the form under its own privacy terms.</p></div></section>`}
-else html=notfound();main.innerHTML=html;document.querySelectorAll('nav a').forEach(a=>{if(a.hash==='#'+route)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current')});document.title=(route==='home'?'A2Z Tec Solutions':route.split('/')[0].replace(/^./,c=>c.toUpperCase())+' · A2Z Tec Solutions');
+else html=notfound();main.innerHTML=html;document.querySelectorAll('nav a').forEach(a=>{if(a.hash==='#'+route)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current')});
 }
 
 function notfound(){return `<section class="wrap">${intro('PAGE NOT FOUND','Let’s get you back.','Choose a service or return to the home page.')}${link('#home','Back to home')}</section>`}

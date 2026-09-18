@@ -2,6 +2,7 @@
   "name": "a2zweb",
   "private": true,
   "scripts": {
-    "build": "node --check app.js && node --check booking.js && node -e \"const fs=require('fs');JSON.parse(fs.readFileSync('content.json'));fs.mkdirSync('dist',{recursive:true});for(const p of ['index.html','style.css','app.js','booking.js','content.json','translations.json'])fs.copyFileSync(p,'dist/'+p);if(fs.existsSync('images'))fs.cpSync('images','dist/images',{recursive:true})\""
+    "test": "node tests/seo.cjs",
+    "build": "node --check app.js && node --check booking.js && node --check health-interactive-v2.js && node -e \"const fs=require('fs');JSON.parse(fs.readFileSync('content.json'));fs.mkdirSync('dist',{recursive:true});for(const p of ['index.html','style.css','app.js','booking.js','health-interactive.css','health-interactive-v2.js','content.json','translations.json','robots.txt','sitemap.xml','CNAME'])fs.copyFileSync(p,'dist/'+p);if(fs.existsSync('images'))fs.cpSync('images','dist/images',{recursive:true})\""
   }
 }
